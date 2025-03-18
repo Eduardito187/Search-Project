@@ -2,14 +2,13 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Database\Seeders\Account\ConfigBaseFrontend;
-use Database\Seeders\Account\TokenSystem;
 use Database\Seeders\Search\TypeAttributes;
 use Database\Seeders\Search\ConditionsExcludes;
 use Database\Seeders\Search\SortingType;
 use Database\Seeders\Analitycs\EventSections;
+use Eduard\Account\Models\SystemToken;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,13 +17,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        /*
-        $this->call([
-            ConfigBaseFrontend::class,
-            TokenSystem::class
-        ]);
-        */
-
         $this->call([
             TypeAttributes::class,
             ConditionsExcludes::class,
@@ -34,5 +26,16 @@ class DatabaseSeeder extends Seeder
         $this->call([
             EventSections::class
         ]);
+
+        if (SystemToken::count() == 0) {
+            DB::table("system_token")->insert([
+                "id" => 1,
+                "name" => "System",
+                "token" => env("TOKEN_SERVER"),
+                "status" => true,
+                "created_at" => date("Y-m-d H:i:s"),
+                "updated_at" => null
+            ]);
+        }
     }
 }
