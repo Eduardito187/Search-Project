@@ -12,7 +12,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('jobSearchProccess:cron')->everyTenMinutes();
+        $schedule->command('jobSendMailIndex:cron')->everyTenMinutes();
+        $schedule->command('jobIndexationProccess:cron')->everyTenMinutes();
+        $schedule->command('jobSaveHistoryCustomerUuid:cron')->everyFiveMinutes();
+        $schedule->command('backupDB')->dailyAt('00:00');
+        $schedule->command('disabledIndexProducts:cron')->hourly();
     }
 
     /**
